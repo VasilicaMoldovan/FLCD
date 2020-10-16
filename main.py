@@ -1,16 +1,10 @@
-# This is a sample Python script.
+from BST import BST
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    bst = BST(["xbd", 1])
+    bst = bst.insert(bst, ['a', 5])
+    bst = bst.insert(bst, ["cf", 3])
+    bst.inorder(bst)
+    print(bst.get_position_by_name(bst, "xbd"))
+    print(bst.get_position_by_id(bst, 5))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
