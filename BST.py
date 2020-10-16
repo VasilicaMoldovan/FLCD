@@ -4,9 +4,27 @@ class BST:
     Complexity: Theta(1)
     """
     def __init__(self, info):
-        self.info = info
-        self.left = None
-        self.right = None
+        self.__info = info
+        self.__left = None
+        self.__right = None
+
+    def get_info(self):
+        return self.__info
+
+    def get_left(self):
+        return self.__left
+
+    def get_right(self):
+        return self.__right
+
+    def set_info(self, info):
+         self.__info = info
+
+    def set_left(self, left):
+        self.__left = left
+
+    def set_right(self, right):
+        self.__right = right
 
     """
     Preconditions:
@@ -67,31 +85,36 @@ class BST:
         info - searched identifier/constant
         position - the position from which we start looking for info
     Postcondition:
-        returns - an integer which is 
-                - None if the identifier/constant id is not in the bst
-                - the position of the identifier/constant id in the bst
+        returns - None if the identifier/constant id is not in the bst
+                - identifier/constant id in the bst
     """
     def search_one_level(self, root, level, info):
         if root is None:
             return None
         if level == 1:
-            if root.info[1] == info:
-                return root.info
+            if root.get_info()[1] == info:
+                return root.get_info()
             else:
                 return None
         elif level > 1:
-            aux = self.search_one_level(root.left, level - 1, info)
+            aux = self.search_one_level(root.get_left(), level - 1, info)
             if aux[1] == info:
                 return aux
             else:
-                return self.search_one_level(root.right, level - 1, info)
+                return self.search_one_level(root.get_right(), level - 1, info)
 
+    """
+    Preconditions: 
+    node - the start node
+    Postconditions:
+    height - the height of the tree starting from node
+    """
     def height(self, node):
         if node is None:
             return 0
         else:
-            left_height = self.height(node.left)
-            right_height = self.height(node.right)
+            left_height = self.height(node.get_left())
+            right_height = self.height(node.get_right())
 
             if left_height > right_height:
                 return left_height + 1
@@ -113,12 +136,12 @@ class BST:
         if root == None:
             return -1
 
-        if root.info[0] == info:
+        if root.get_info()[0] == info:
             return position
 
-        if root.info[0] < info[0]:
-            return self.search(root.right, info, position + 1)
-        return self.search(root.left, info, position + 1)
+        if root.get_info()[0] < info[0]:
+            return self.search(root.get_right(), info, position + 1)
+        return self.search(root.get_left(), info, position + 1)
 
     """
     Preconditions:
@@ -132,12 +155,12 @@ class BST:
     def insert(self, root, info):
         if root == None:
             return BST(info)
-        if root.info[0] == info[0]:
+        if root.get_info()[0] == info[0]:
             return root
-        if root.info[0] < info[0]:
-            root.right = self.insert(root.right, info)
+        if root.get_info()[0] < info[0]:
+            root.set_right(self.insert(root.get_right(), info))
         else:
-            root.left = self.insert(root.left, info)
+            root.set_left(self.insert(root.get_left(), info))
 
         return root
 
@@ -148,6 +171,6 @@ class BST:
    """
     def inorder(self, root):
         if root:
-            self.inorder(root.left)
-            print(root.info)
-            self.inorder(root.right)
+            self.inorder(root.get_left())
+            print(root.get_info())
+            self.inorder(root.get_right())
