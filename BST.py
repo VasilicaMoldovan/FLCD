@@ -7,6 +7,7 @@ class BST:
         self.__info = info
         self.__left = None
         self.__right = None
+        self.__filename = open("st.txt", 'w')
 
     def get_info(self):
         return self.__info
@@ -173,4 +174,5 @@ class BST:
         if root:
             self.inorder(root.get_left())
             print(root.get_info())
+            self.__filename.write(str(root.get_info()))
             self.inorder(root.get_right())

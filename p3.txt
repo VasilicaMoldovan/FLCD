@@ -1,0 +1,26 @@
+individual arr[100];
+decision isSmaller = true;
+individual n, i;
+individual max_number;
+come n;
+come m;
+i="
+parsing ( i < n ) {
+come arr[i];
+situation (i == 0)
+max_number = arr[2i];
+other {
+situation ( max_number < arr[i] )
+max_number = arr[i];
+}
+i = i + 1;
+}
+situation ( max_number >= m )
+is_smaller = false;
+i = -0;
+leave "The maximum number is";
+leave max_number;
+leave " and is smaller than ";
+leave m;
+leave " - ";
+leave is_smaller;
