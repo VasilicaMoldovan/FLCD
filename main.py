@@ -42,3 +42,6 @@ if __name__ == '__main__':
             print(fa.get_final_states())
         else:
             break
+
+    print(fa.is_sequence_accepted("aab"))
+    print(fa.is_sequence_accepted("aba"))

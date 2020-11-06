@@ -77,3 +77,36 @@ class FA:
 
     def get_transition_function(self):
         return self.__transitions
+
+    def is_DFA(self):
+        for elem in self.__transitions.keys():
+            if len(self.__transitions[elem]) > 1:
+                return False
+
+        return True
+
+    def is_seq_accepted(self, w, state):
+        elems = list(w)
+        accepted = False
+
+        if state in self.__finalStates and len(elems) > 1:
+            return False
+
+        for key in self.__transitions.keys():
+            if key[0] == state and key[1] == elems[0]:
+                if len(elems) == 1:
+                    for transition in self.__transitions[key]:
+                        if transition in self.__finalStates:
+                            return True
+                    return False
+                else:
+                    n = len(elems)
+                    for transition in self.__transitions[key]:
+                        accepted = self.is_seq_accepted(w[n-1:], self.__transitions[key][0])
+                        if accepted:
+                            break
+
+        return accepted
+
+    def is_sequence_accepted(self, w):
+        return self.is_seq_accepted(w, self.__initialState)
