@@ -5,7 +5,7 @@ class FA:
         self.__states = []
         self.__alphabet = []
         self.__finalStates = []
-        self.__initialState = []
+        self.__initialState = None
         self.__transitions = {}
         self.readFromFile(filename)
 
@@ -44,22 +44,22 @@ class FA:
 
         line = file.readline().strip()
         #read initial state
-        delimiters = "=", "{", "}"
-        regexPattern = '|'.join(map(re.escape, delimiters))
-        tokens = re.split(regexPattern, line)
-        self.__initialState = tokens[2]
+        token = line.split("=")
+        self.__initialState = token[1]
 
         line = file.readline().strip()
-        #read the productions
+        #read the transitions
         while line != "":
-            delimiters = "-", ">"
+            delimiters = "(", "=", ")"
             regexPattern = '|'.join(map(re.escape, delimiters))
             tokens = re.split(regexPattern, line)
-            transitions = tokens[2].split("|")
-            self.__transitions[transitions[0]] = []
+            key = tokens[1].split(",")
+            key1 = (key[0], key[1])
 
-            for transition in transitions:
-                self.__transitions[transitions[0]].append(transition)
+            if key1 not in self.__transitions.keys():
+                self.__transitions[key1] = [tokens[3]]
+            else:
+                self.__transitions[key1].append(tokens[3])
 
             line = file.readline().strip()
 
