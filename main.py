@@ -11,8 +11,8 @@ def show_menu():
     print("6. Exit")
 
 if __name__ == '__main__':
-    '''
-    tokens = Scanner("p3.txt")
+
+    tokens = Scanner("p1.txt")
     error = tokens.tokenize()
     if not error:
         tokens.construct_pif()
@@ -23,8 +23,9 @@ if __name__ == '__main__':
         file.close()
     else:
         print(str(tokens.get_error()))
+
     '''
-    fa = FA("fa1.txt")
+    fa = FA("fa_string_const.in")
     option = 0
 
     while True:
@@ -42,6 +43,4 @@ if __name__ == '__main__':
             print(fa.get_final_states())
         else:
             break
-
-    print(fa.is_sequence_accepted("aab"))
-    print(fa.is_sequence_accepted("aba"))
+    '''

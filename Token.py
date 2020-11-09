@@ -1,5 +1,6 @@
 from BST import BST
 import re
+from FA import FA
 
 class Scanner:
     def __init__(self, filename):
@@ -10,6 +11,10 @@ class Scanner:
         self.__ST = BST(["", -1])
         self.__PIF = {}
         self.__reserved_words = ["individual", "decision","char","float","const","parsing","situation","other","come","leave", "return","break"]
+        self.__fa_identifier = FA("fa_identifier.in")
+        self.__fa_int_const = FA("fa_integer_const.in")
+        self.__fa_char_const = FA("fa_char_const.in")
+        self.__fa_string_const = FA("fa_string_const.in")
         self.generate_codes()
 
     def get_error(self):
@@ -62,6 +67,14 @@ class Scanner:
                 correct = correct and (self.is_constant(tokens[1]) or self.is_identifier(tokens[1]))
                 return correct
 
+    def is_identifier_1(self, identifier):
+        return self.__fa_identifier.is_seq_accepted(identifier, self.__fa_identifier.get_initial_state())
+
+    def is_constant_1(self, constant):
+        return (self.__fa_int_const.is_seq_accepted(constant, self.__fa_int_const.get_initial_state())
+                or self.__fa_char_const.is_seq_accepted(constant, self.__fa_char_const.get_initial_state())
+                or self.__fa_string_const.is_seq_accepted(constant, self.__fa_string_const.get_initial_state()))
+
     '''
     Preconditions: constant - a string
     Postconditions: returns True if the given string respects the 
@@ -112,43 +125,49 @@ class Scanner:
         count_line = 1
         first = True
         while line != "" and len(self.__error) == 0:
-            delimiters = ";", ",", "{", "}", "(", ")", ":", "+", "*", "/", "<", ">", "&&", "||", "!=", "==", "<=", ">=", "=", " "
+            delimiters = ";", ",", "{", "}", "(", ")", ":", "*", "/", "<", ">", "&&", "||", "!=", "==", "<=", ">=", "=", " "
             regexPattern = '|'.join(map(re.escape, delimiters))
             tokens = re.split(regexPattern, line)
 
             if tokens[0] != None and tokens[0] != "{" and len(tokens[0]) > 0 and len(self.__error) == 0:
-                if tokens[0] not in self.__tokens.keys() and not self.is_identifier(tokens[0]) and not self.is_reserverd_word(tokens[0]):
+                if tokens[0] not in self.__tokens.keys() and not self.is_identifier_1(tokens[0]) and not self.is_reserverd_word(tokens[0]):
                     self.__error["Invalid identifier at line "] = count_line
                     break
             if len(self.__error) == 0:
                 for i in range (1, len(tokens)):
                     current_error = ""
                     found = False
-                    if tokens[i] is not None and len(tokens[i]) > 0 and tokens[i] != "{" and len(list(tokens[i])) > 0:
-                        if not self.is_identifier(tokens[i]):
+                    if tokens[i] is not None and len(tokens[i]) > 0 and tokens[i] != "{" and len(list(tokens[i])) > 0 and tokens[i] not in ['+', '-']:
+                        if not self.is_identifier_1(tokens[i]):
                             current_error = "invalid identifier"
                         else:
                             found = True
-                        if not self.is_constant(tokens[i]):
+                        if not self.is_constant_1(tokens[i]):
                             if not found:
                                 current_error = "invalid constant"
                         else:
                             current_error = ""
                         if self.is_reserverd_word(tokens[i]):
                                 current_error = ""
+                        if '[' in list(tokens[i]) and ']' in list(tokens[i]):
+                            arr = tokens[i].split('[')
+                            if self.is_identifier_1(arr[0]):
+                                index = arr[1].split(']')
+                                if self.is_constant(index[0]):
+                                    current_error = ""
                         if current_error != "":
                             err = ""
                             err += current_error + " at line "
                             self.__error[err] = count_line
                             break
                         if first == True:
-                            if self.is_identifier(tokens[i]):
+                            if self.is_identifier_1(tokens[i]):
                                 self.__ST.set_info([tokens[i], self.__tokens['identifier']])
                             else:
                                 self.__ST.set_info([tokens[i], self.__tokens['constant']])
                             first = False
                         else:
-                            if self.is_identifier(tokens[i]):
+                            if self.is_identifier_1(tokens[i]):
                                 self.__ST.insert(self.__ST, [tokens[i], self.__tokens['identifier']])
                             else:
                                 self.__ST.insert(self.__ST, [tokens[i], self.__tokens['constant']])

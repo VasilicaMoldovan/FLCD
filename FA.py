@@ -85,11 +85,18 @@ class FA:
 
         return True
 
+    def get_states_from_transitions(self):
+        states = []
+        for transition in self.__transitions.keys():
+            states.append(transition[0])
+
+        return states
+
     def is_seq_accepted(self, w, state):
         elems = list(w)
         accepted = False
 
-        if state in self.__finalStates and len(elems) > 1:
+        if state in self.__finalStates and state not in self.get_states_from_transitions() and len(elems) > 1:
             return False
 
         for key in self.__transitions.keys():
@@ -100,9 +107,8 @@ class FA:
                             return True
                     return False
                 else:
-                    n = len(elems)
                     for transition in self.__transitions[key]:
-                        accepted = self.is_seq_accepted(w[n-1:], self.__transitions[key][0])
+                        accepted = self.is_seq_accepted(w[1:], self.__transitions[key][0])
                         if accepted:
                             break
 

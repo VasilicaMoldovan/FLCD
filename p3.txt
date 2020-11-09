@@ -8,7 +8,7 @@ i="
 parsing ( i < n ) {
 come arr[i];
 situation (i == 0)
-max_number = arr[2i];
+max_number = arr[i];
 other {
 situation ( max_number < arr[i] )
 max_number = arr[i];
