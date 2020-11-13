@@ -115,4 +115,6 @@ class FA:
         return accepted
 
     def is_sequence_accepted(self, w):
-        return self.is_seq_accepted(w, self.__initialState)
+        if self.is_DFA():
+            return self.is_seq_accepted(w, self.__initialState)
+        return False

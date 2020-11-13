@@ -12,7 +12,7 @@ def show_menu():
 
 if __name__ == '__main__':
 
-    tokens = Scanner("p1.txt")
+    tokens = Scanner("p3.txt")
     error = tokens.tokenize()
     if not error:
         tokens.construct_pif()

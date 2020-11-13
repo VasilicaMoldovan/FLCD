@@ -4,11 +4,11 @@ individual n, i;
 individual max_number;
 come n;
 come m;
-i="
+i=0
 parsing ( i < n ) {
 come arr[i];
 situation (i == 0)
-max_number = arr[i];
+max_number = arr[2i];
 other {
 situation ( max_number < arr[i] )
 max_number = arr[i];
