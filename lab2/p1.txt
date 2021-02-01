@@ -1,0 +1,11 @@
+individual a, b, gcd;
+come a;
+come b;
+parsing (a != b) {
+situation (a > b)
+a = a - b;
+other
+b = b - a;
+}
+gcd = a;
+leave gcd;

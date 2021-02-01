@@ -1,0 +1,1 @@
+{'individual': -1, 'a': 0, 'b': 1, 'gcd': 2, 'come': -1, 'parsing': -1, 'situation': -1, 'other': -1, 'leave': -1}
